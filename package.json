@@ -1,0 +1,21 @@
+{
+  "name": "projects_management_system",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "Ahmad Karah",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "start": "node --env-file=.env app.js",
+    "dev": "nodemon --env-file=.env app.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "mysql2": "^3.18.0",
+    "sequelize": "^6.37.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
