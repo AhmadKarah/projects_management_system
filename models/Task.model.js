@@ -5,7 +5,7 @@ const Project = require('./Project.model');
 const Task = sequelize.define(
   'Task',
   {
-    Task_id: {
+    task_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true,

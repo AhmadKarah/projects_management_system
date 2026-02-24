@@ -2,6 +2,10 @@ const express = require('express');
 const sequelize = require('./config/database');
 
 const app = express();
+app.use(express.json());
+
+const authRouter = require('./routes/users.route');
+app.use('/api/auth', authRouter);
 
 async function startServer() {
   try {
