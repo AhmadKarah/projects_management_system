@@ -6,8 +6,11 @@ app.use(express.json());
 
 const authRouter = require('./routes/auth.route');
 const projectsRouter = require('./routes/projects.route');
+const tasksRouter = require('./routes/tasks.route');
+
 app.use('/api/auth', authRouter);
 app.use('/api/projects', projectsRouter);
+app.use('/api/projects/:projectID/tasks', tasksRouter);
 
 async function startServer() {
   try {

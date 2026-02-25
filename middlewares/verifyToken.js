@@ -9,8 +9,8 @@ const verifyToken = (req, res, next) => {
   const token = authHeader.split(' ')[1];
 
   try {
-    const currentUser = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    req.currentUser = currentUser;
+    const user = jwt.verify(token, process.env.JWT_SECRET_KEY);
+    req.user = user;
     next();
   } catch (err) {
     return res.status(401).json({ error: 'Invalid token' });

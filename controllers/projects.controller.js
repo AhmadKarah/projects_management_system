@@ -1,8 +1,9 @@
 const Project = require('../models/Project.model');
+const verifyProjectOwnership = require('../utils/project');
 
 const getAllProjects = async (req, res) => {
   try {
-    const userID = req.currentUser.user_id;
+    const userID = req.user.user_id;
 
     const projects = await Project.findAll({ where: { user_id: userID } });
 
@@ -14,19 +15,10 @@ const getAllProjects = async (req, res) => {
 
 const getSingleProject = async (req, res) => {
   try {
-    const userID = req.currentUser.user_id;
-    const { id } = req.params;
+    const userID = req.user.user_id;
+    const { projectID } = req.params;
 
-    const project = await Project.findOne({
-      where: {
-        project_id: id,
-        user_id: userID,
-      },
-    });
-
-    if (!project) {
-      return res.status(404).json({ error: 'Project not found' });
-    }
+    const project = await verifyProjectOwnership(projectID, userID);
 
     res.status(200).json({ data: project });
   } catch (error) {
@@ -36,7 +28,7 @@ const getSingleProject = async (req, res) => {
 
 const createProject = async (req, res) => {
   try {
-    const userID = req.currentUser.user_id;
+    const userID = req.user.user_id;
     const { title, description } = req.body;
 
     if (!title) {
@@ -59,20 +51,11 @@ const createProject = async (req, res) => {
 
 const updateProject = async (req, res) => {
   try {
-    const userID = req.currentUser.user_id;
-    const { id } = req.params;
+    const userID = req.user.user_id;
+    const { projectID } = req.params;
     const { title, description } = req.body;
 
-    const project = await Project.findOne({
-      where: {
-        project_id: id,
-        user_id: userID,
-      },
-    });
-
-    if (!project) {
-      return res.status(404).json({ error: 'Project not found' });
-    }
+    const project = await verifyProjectOwnership(projectID, userID);
 
     if (title !== undefined) project.title = title;
     if (description !== undefined) project.description = description;
@@ -90,19 +73,10 @@ const updateProject = async (req, res) => {
 
 const deleteProject = async (req, res) => {
   try {
-    const userID = req.currentUser.user_id;
-    const { id } = req.params;
+    const userID = req.user.user_id;
+    const { projectID } = req.params;
 
-    const project = await Project.findOne({
-      where: {
-        project_id: id,
-        user_id: userID,
-      },
-    });
-
-    if (!project) {
-      return res.status(404).json({ error: 'Project not found' });
-    }
+    const project = await verifyProjectOwnership(projectID, userID);
 
     await project.destroy();
 

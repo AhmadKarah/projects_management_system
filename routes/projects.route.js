@@ -2,7 +2,7 @@ const express = require('express');
 const projectsController = require('../controllers/projects.controller');
 const verifyToken = require('../middlewares/verifyToken');
 
-const router = express();
+const router = express.Router();
 
 router
   .route('/')
@@ -10,7 +10,7 @@ router
   .post(verifyToken, projectsController.createProject);
 
 router
-  .route('/:id')
+  .route('/:projectID')
   .get(verifyToken, projectsController.getSingleProject)
   .patch(verifyToken, projectsController.updateProject)
   .delete(verifyToken, projectsController.deleteProject);
