@@ -1,99 +1,63 @@
 const Task = require('../models/Task.model');
-const constants = require('../utils/constants');
+const validateTaskInput = require('../utils/validateTask');
 
 const getAllTasks = async (req, res) => {
-  try {
-    const tasks = await Task.findAll({
-      where: { project_id: req.project.project_id },
-    });
+  const tasks = await req.project.getTasks();
 
-    res.status(200).json({ data: tasks });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Something went wrong' });
-  }
+  res.status(200).json({ data: tasks });
 };
 
 const getSingleTask = async (req, res) => {
-  try {
-    res.status(200).json({ data: req.task });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Something went wrong' });
-  }
+  res.status(200).json({ data: req.task });
 };
 
 const createTask = async (req, res) => {
-  try {
-    const { title, status, priority } = req.body;
+  const { title, status, priority } = req.body;
 
-    if (!title) {
-      return res.status(400).json({ error: 'Title is required' });
-    }
-
-    if (status && !constants.statusOptions.includes(status)) {
-      return res.status(400).json({ error: `Status must be one of: ${constants.statusOptions.join(', ')}` });
-    }
-
-    if (priority && !constants.priorityOptions.includes(priority)) {
-      return res.status(400).json({ error: `Priority must be one of: ${constants.priorityOptions.join(', ')}` });
-    }
-
-    const newTask = await Task.create({
-      title,
-      status: status || 'pending',
-      priority: priority || 'medium',
-      project_id: req.project.project_id,
-    });
-
-    res.status(201).json({
-      message: 'Task created successfully',
-      data: newTask,
-    });
-  } catch (error) {
-    res.status(error.status || 500).json({ error: error.message });
+  if (!title) {
+    const error = new Error('Title is required');
+    error.status = 400;
+    throw error;
   }
+
+  validateTaskInput({ status, priority });
+
+  const newTask = await Task.create({
+    title,
+    status: status || 'pending',
+    priority: priority || 'medium',
+    project_id: req.project.project_id,
+  });
+
+  res.status(201).json({
+    message: 'Task created successfully',
+    data: newTask,
+  });
 };
 
 const updateTask = async (req, res) => {
-  try {
-    const { title, status, priority } = req.body;
+  const { title, status, priority } = req.body;
 
-    if (title !== undefined) req.task.title = title;
+  validateTaskInput({ status, priority });
 
-    if (status !== undefined && !constants.statusOptions.includes(status)) {
-      return res.status(400).json({ error: 'Invalid status value' });
-    }
+  if (title !== undefined) req.task.title = title;
+  if (status !== undefined) req.task.status = status;
+  if (priority !== undefined) req.task.priority = priority;
 
-    if (status !== undefined) req.task.status = status;
+  await req.task.save();
 
-    if (priority !== undefined && !constants.priorityOptions.includes(priority)) {
-      return res.status(400).json({ error: 'Invalid priority value' });
-    }
-
-    if (priority !== undefined) req.task.priority = priority;
-
-    await req.task.save();
-
-    res.status(200).json({
-      message: 'Task updated successfully',
-      data: req.task,
-    });
-  } catch (error) {
-    res.status(error.status || 500).json({ error: error.message });
-  }
+  res.status(200).json({
+    message: 'Task updated successfully',
+    data: req.task,
+  });
 };
 
 const deleteTask = async (req, res) => {
-  try {
-    await req.task.destroy();
+  await req.task.destroy();
 
-    res.status(200).json({
-      message: 'Task deleted successfully',
-    });
-  } catch (error) {
-    res.status(error.status || 500).json({ error: error.message });
-  }
+  res.status(200).json({
+    message: 'Task deleted successfully',
+  });
 };
 
 module.exports = {
