@@ -4,8 +4,10 @@ const sequelize = require('./config/database');
 const app = express();
 app.use(express.json());
 
-const authRouter = require('./routes/users.route');
+const authRouter = require('./routes/auth.route');
+const projectsRouter = require('./routes/projects.route');
 app.use('/api/auth', authRouter);
+app.use('/api/projects', projectsRouter);
 
 async function startServer() {
   try {
