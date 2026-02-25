@@ -1,18 +1,19 @@
 const express = require('express');
 const projectsController = require('../controllers/projects.controller');
 const verifyToken = require('../middlewares/verifyToken');
+const projectOwnership = require('../middlewares/projectOwnership');
 
 const router = express.Router();
 
-router
-  .route('/')
-  .get(verifyToken, projectsController.getAllProjects)
-  .post(verifyToken, projectsController.createProject);
+router.use(verifyToken);
+
+router.route('/').get(projectsController.getAllProjects).post(projectsController.createProject);
 
 router
   .route('/:projectID')
-  .get(verifyToken, projectsController.getSingleProject)
-  .patch(verifyToken, projectsController.updateProject)
-  .delete(verifyToken, projectsController.deleteProject);
+  .use(projectOwnership)
+  .get(projectsController.getSingleProject)
+  .patch(projectsController.updateProject)
+  .delete(projectsController.deleteProject);
 
 module.exports = router;

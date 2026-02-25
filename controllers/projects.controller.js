@@ -1,11 +1,8 @@
 const Project = require('../models/Project.model');
-const verifyProjectOwnership = require('../utils/project');
 
 const getAllProjects = async (req, res) => {
   try {
-    const userID = req.user.user_id;
-
-    const projects = await Project.findAll({ where: { user_id: userID } });
+    const projects = await Project.findAll({ where: { user_id: req.user.user_id } });
 
     res.status(200).json({ data: projects });
   } catch (error) {
@@ -15,12 +12,7 @@ const getAllProjects = async (req, res) => {
 
 const getSingleProject = async (req, res) => {
   try {
-    const userID = req.user.user_id;
-    const { projectID } = req.params;
-
-    const project = await verifyProjectOwnership(projectID, userID);
-
-    res.status(200).json({ data: project });
+    res.status(200).json({ data: req.project });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -28,7 +20,6 @@ const getSingleProject = async (req, res) => {
 
 const createProject = async (req, res) => {
   try {
-    const userID = req.user.user_id;
     const { title, description } = req.body;
 
     if (!title) {
@@ -38,7 +29,7 @@ const createProject = async (req, res) => {
     const newProject = await Project.create({
       title,
       description: description || null,
-      user_id: userID,
+      user_id: req.user.user_id,
     });
     res.status(201).json({
       message: 'Project created successfully',
@@ -51,20 +42,16 @@ const createProject = async (req, res) => {
 
 const updateProject = async (req, res) => {
   try {
-    const userID = req.user.user_id;
-    const { projectID } = req.params;
     const { title, description } = req.body;
 
-    const project = await verifyProjectOwnership(projectID, userID);
+    if (title !== undefined) req.project.title = title;
+    if (description !== undefined) req.project.description = description;
 
-    if (title !== undefined) project.title = title;
-    if (description !== undefined) project.description = description;
-
-    await project.save();
+    await req.project.save();
 
     res.status(200).json({
       message: 'Project updated successfully',
-      data: project,
+      data: req.project,
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -73,12 +60,7 @@ const updateProject = async (req, res) => {
 
 const deleteProject = async (req, res) => {
   try {
-    const userID = req.user.user_id;
-    const { projectID } = req.params;
-
-    const project = await verifyProjectOwnership(projectID, userID);
-
-    await project.destroy();
+    await req.project.destroy();
 
     res.status(200).json({
       message: 'Project deleted successfully',
