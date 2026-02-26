@@ -1,8 +1,11 @@
 const express = require('express');
+const cors = require('cors');
 const sequelize = require('./config/database');
 
 const app = express();
+app.use(cors());
 app.use(express.json());
+app.use(express.static('public'));
 
 const authRouter = require('./routes/auth.route');
 const projectsRouter = require('./routes/projects.route');
@@ -19,8 +22,10 @@ async function startServer() {
     await sequelize.authenticate();
     console.log('Database connected successfully');
     await sequelize.sync({ force: false });
-    app.listen(3000, () => {
-      console.log('Server running on port 3000');
+    const PORT = process.env.PORT || 3000;
+
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
     });
   } catch (error) {
     console.error('Unable to connect to the database:', error);

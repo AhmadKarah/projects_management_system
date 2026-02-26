@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Projects</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body class="dashboard-projects">
+    <div class="navbar">
+      <h2>Projects</h2>
+      <button onclick="logout()">Logout</button>
+    </div>
+
+    <div class="container">
+      <button class="success" onclick="openModal()">+ New Project</button>
+
+      <div id="projects" class="grid"></div>
+      <div id="empty" class="empty"></div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modalOverlay" class="modal-overlay">
+      <div class="modal">
+        <h3 id="modalTitle">Create Project</h3>
+        <input type="text" id="projectTitle" placeholder="Project title" />
+        <input type="text" id="projectDesc" placeholder="Description (optional)" />
+        <button onclick="saveProject()" id="saveBtn">Create</button>
+      </div>
+    </div>
+
+    <script src="js/projects.js"></script>
+  </body>
+</html>

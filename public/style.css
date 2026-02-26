@@ -1,0 +1,308 @@
+/* ============================= */
+/* Global Reset */
+/* ============================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+}
+
+/* ============================= */
+/* Auth Pages (Login + Register) */
+/* ============================= */
+
+.auth-page-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #4e73df, #1cc88a);
+}
+
+.auth-page-register {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #1cc88a, #4e73df);
+}
+
+.auth-box {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+}
+
+.auth-card {
+  background: white;
+  padding: 40px 30px;
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  animation: fadeIn 0.4s ease-in-out;
+}
+
+.auth-card h2 {
+  margin-bottom: 25px;
+  color: #333;
+}
+
+.auth-card input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.auth-card input:focus {
+  outline: none;
+}
+
+.primary {
+  width: 100%;
+  padding: 12px;
+  background: #4e73df;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.primary:hover {
+  background: #2e59d9;
+  transform: translateY(-2px);
+}
+
+.success {
+  width: 100%;
+  padding: 12px;
+  background: #1cc88a;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.success:hover {
+  background: #17a673;
+  transform: translateY(-2px);
+}
+
+a {
+  color: #4e73df;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+#error {
+  min-height: 20px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================= */
+/* Projects + Tasks Shared */
+/* ============================= */
+
+.dashboard-projects {
+  background: linear-gradient(135deg, #4e73df, #1cc88a);
+}
+
+.dashboard-tasks {
+  background: linear-gradient(135deg, #4e73df, #36b9cc);
+}
+
+.navbar {
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  padding: 20px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar button {
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.container {
+  padding: 40px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.card {
+  backdrop-filter: blur(15px);
+  background: rgba(255, 255, 255, 0.2);
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  transition: 0.3s;
+  color: white;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.edit,
+.danger {
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.edit {
+  background: white;
+  color: #4e73df;
+}
+
+.danger {
+  background: #e74a3b;
+  color: white;
+}
+
+.empty {
+  margin-top: 60px;
+  text-align: center;
+  color: white;
+  font-size: 18px;
+}
+
+/* ============================= */
+/* Badges */
+/* ============================= */
+
+.badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  margin-right: 6px;
+  color: white;
+}
+
+.pending {
+  background: #f6c23e;
+}
+.in-progress {
+  background: #36b9cc;
+}
+.completed {
+  background: #1cc88a;
+}
+
+.low {
+  background: #858796;
+}
+.medium {
+  background: #4e73df;
+}
+.high {
+  background: #e74a3b;
+}
+
+/* ============================= */
+/* Modal */
+/* ============================= */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(6px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.2);
+  padding: 30px;
+  border-radius: 18px;
+  width: 340px;
+  color: white;
+}
+
+.modal input,
+.modal select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+}
+
+.modal button {
+  width: 100%;
+  padding: 10px;
+  background: white;
+  color: #4e73df;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ============================= */
+/* Responsive */
+/* ============================= */
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 15px 20px;
+  }
+
+  .container {
+    padding: 25px 20px;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-card {
+    padding: 30px 20px;
+  }
+}
