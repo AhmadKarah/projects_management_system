@@ -1,11 +1,13 @@
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const sequelize = require('./config/database');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, 'public')));
 
 const authRouter = require('./routes/auth.route');
 const projectsRouter = require('./routes/projects.route');
@@ -15,6 +17,11 @@ const errorHandler = require('./middlewares/errorHandler');
 app.use('/api/auth', authRouter);
 app.use('/api/projects', projectsRouter);
 app.use('/api/projects/:projectID/tasks', tasksRouter);
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'login.html'));
+});
+
 app.use(errorHandler);
 
 async function startServer() {
