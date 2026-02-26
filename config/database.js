@@ -6,6 +6,9 @@ const sequelize = new Sequelize(process.env.DB_NAME, process.env.DB_USER, proces
   dialect: 'mysql',
   logging: false,
   timezone: '+03:00',
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 module.exports = sequelize;
