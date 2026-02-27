@@ -57,7 +57,7 @@ const login = async (req, res) => {
       return res.status(401).json('wrong password');
     }
 
-    const token = await generateToken({ user_id: user.user_id, email: user.email });
+    const token = await generateToken({ user_id: user.user_id, email: user.email, role: user.role });
 
     res.status(200).json({ msg: 'Welcome', data: token });
   } catch (error) {

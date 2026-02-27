@@ -32,6 +32,7 @@ async function login() {
     localStorage.setItem('token', data.data);
     window.location.href = 'projects.html';
   } catch (err) {
+    console.log(err);
     errorDiv.innerText = 'Server not reachable';
   }
 }

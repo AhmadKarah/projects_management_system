@@ -12,9 +12,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 const authRouter = require('./routes/auth.route');
 const projectsRouter = require('./routes/projects.route');
 const tasksRouter = require('./routes/tasks.route');
+const usersRouter = require('./routes/users.route');
 const errorHandler = require('./middlewares/errorHandler');
 
 app.use('/api/auth', authRouter);
+app.use('/api/users', usersRouter);
 app.use('/api/projects', projectsRouter);
 app.use('/api/projects/:projectID/tasks', tasksRouter);
 
