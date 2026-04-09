@@ -1,11 +1,12 @@
-const API = window.location.hostname === 'localhost' ? 'http://localhost:3000/api' : '/api';
-const token = localStorage.getItem('token');
+const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? 'http://localhost:3000/api'
+  : '/api';
 
+const token = localStorage.getItem('token');
 if (!token) window.location.href = 'login.html';
 
 const projectsDiv = document.getElementById('projects');
-const emptyDiv = document.getElementById('empty');
-
+const emptyDiv    = document.getElementById('empty');
 let editingProjectId = null;
 
 async function loadProjects() {
@@ -16,29 +17,27 @@ async function loadProjects() {
   if (res.status === 401) return logout();
 
   const data = await res.json();
-
   projectsDiv.innerHTML = '';
 
   if (!data.data || data.data.length === 0) {
-    emptyDiv.innerText = 'No projects yet.';
+    emptyDiv.innerText = 'No projects yet. Create your first one!';
     return;
   }
 
-  emptyDiv.innerText = '';
+  emptyDiv.innerText = `${data.data.length} project${data.data.length !== 1 ? 's' : ''}`;
 
-  data.data.forEach((p) => {
+  data.data.forEach((p, i) => {
     const card = document.createElement('div');
     card.className = 'card';
+    card.style.animationDelay = `${i * 60}ms`;
 
     card.innerHTML = `
       <h3>${p.title}</h3>
       <p>${p.description || 'No description'}</p>
       <div class="actions">
-        <button class="primary" onclick="openProject(${p.project_id})">Open</button>
-        <button class="edit" onclick="editProject(${p.project_id}, '${p.title}', \`${
-      p.description || ''
-    }\`)">Edit</button>
-        <button class="danger" onclick="deleteProject(${p.project_id})">Delete</button>
+        <button class="actions-open"   onclick="openProject(${p.project_id})">Open</button>
+        <button class="actions-edit"   onclick="editProject(${p.project_id}, '${p.title}', \`${p.description || ''}\`)">Edit</button>
+        <button class="actions-delete" onclick="deleteProject(${p.project_id})">Delete</button>
       </div>
     `;
 
@@ -53,6 +52,7 @@ function openModal() {
   document.getElementById('projectTitle').value = '';
   document.getElementById('projectDesc').value = '';
   document.getElementById('modalOverlay').style.display = 'flex';
+  setTimeout(() => document.getElementById('projectTitle').focus(), 100);
 }
 
 function editProject(id, title, description) {
@@ -69,30 +69,18 @@ function closeModal() {
 }
 
 async function saveProject() {
-  const title = document.getElementById('projectTitle').value;
+  const title       = document.getElementById('projectTitle').value;
   const description = document.getElementById('projectDesc').value;
-
   if (!title) return;
 
-  if (editingProjectId) {
-    await fetch(`${API}/projects/${editingProjectId}`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ title, description }),
-    });
-  } else {
-    await fetch(`${API}/projects`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ title, description }),
-    });
-  }
+  const url    = editingProjectId ? `${API}/projects/${editingProjectId}` : `${API}/projects`;
+  const method = editingProjectId ? 'PATCH' : 'POST';
+
+  await fetch(url, {
+    method,
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ title, description }),
+  });
 
   closeModal();
   loadProjects();
@@ -103,7 +91,6 @@ async function deleteProject(id) {
     method: 'DELETE',
     headers: { Authorization: `Bearer ${token}` },
   });
-
   loadProjects();
 }
 
@@ -115,5 +102,9 @@ function logout() {
   localStorage.removeItem('token');
   window.location.href = 'login.html';
 }
+
+document.getElementById('modalOverlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+});
 
 loadProjects();

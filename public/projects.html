@@ -1,35 +1,59 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Projects</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Projects — Taskflow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="app-page">
 
-    <link rel="stylesheet" href="style.css" />
-  </head>
+  <nav>
+    <div class="logo">
+      <div class="logo-icon">✦</div>
+      <span class="logo-text">Taskflow</span>
+    </div>
+    <div class="nav-right">
+      <button class="logout" onclick="logout()">Sign out</button>
+    </div>
+  </nav>
 
-  <body class="dashboard-projects">
-    <div class="navbar">
-      <h2>Projects</h2>
-      <button onclick="logout()">Logout</button>
+  <main>
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Projects</h1>
+        <p class="page-count" id="empty"></p>
+      </div>
+      <button class="new-btn" onclick="openModal()">+ New Project</button>
     </div>
 
-    <div class="container">
-      <button class="success" onclick="openModal()">+ New Project</button>
+    <div id="projects"></div>
+  </main>
 
-      <div id="projects" class="grid"></div>
-      <div id="empty" class="empty"></div>
-    </div>
-
-    <!-- Modal -->
-    <div id="modalOverlay" class="modal-overlay">
-      <div class="modal">
-        <h3 id="modalTitle">Create Project</h3>
-        <input type="text" id="projectTitle" placeholder="Project title" />
-        <input type="text" id="projectDesc" placeholder="Description (optional)" />
-        <button onclick="saveProject()" id="saveBtn">Create</button>
+  <!-- Modal -->
+  <div id="modalOverlay">
+    <div class="modal">
+      <div class="modal-header">
+        <span id="modalTitle">Create Project</span>
+        <button class="close-btn" onclick="closeModal()">✕</button>
+      </div>
+      <div class="field">
+        <label>Title</label>
+        <input type="text" id="projectTitle" placeholder="Project name..." />
+      </div>
+      <div class="field">
+        <label>Description</label>
+        <textarea id="projectDesc" rows="3" placeholder="What is this project about?"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button class="cancel-btn" onclick="closeModal()">Cancel</button>
+        <button class="save-btn" id="saveBtn" onclick="saveProject()">Create</button>
       </div>
     </div>
+  </div>
 
-    <script src="js/projects.js"></script>
-  </body>
+  <script src="js/projects.js"></script>
+</body>
 </html>

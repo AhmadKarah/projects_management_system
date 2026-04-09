@@ -1,12 +1,11 @@
-const API = window.location.hostname === 'localhost' ? 'http://localhost:3000/api' : '/api';
+const API = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
+  ? 'http://localhost:3000/api'
+  : '/api';
 
 async function login() {
-  const emailInput = document.getElementById('email');
-  const passwordInput = document.getElementById('password');
+  const email    = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
   const errorDiv = document.getElementById('error');
-
-  const email = emailInput.value;
-  const password = passwordInput.value;
 
   errorDiv.innerText = '';
 
@@ -23,16 +22,14 @@ async function login() {
     });
 
     const data = await res.json();
-
-    if (!res.ok) {
-      errorDiv.innerText = data.error || 'Login failed';
-      return;
-    }
+    if (!res.ok) { errorDiv.innerText = data.error || 'Login failed'; return; }
 
     localStorage.setItem('token', data.data);
     window.location.href = 'projects.html';
   } catch (err) {
-    console.log(err);
+    console.error(err);
     errorDiv.innerText = 'Server not reachable';
   }
 }
+
+document.addEventListener('keydown', e => { if (e.key === 'Enter') login(); });

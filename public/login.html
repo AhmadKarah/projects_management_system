@@ -1,30 +1,40 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Login</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login — Taskflow</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="auth-page">
 
-    <link rel="stylesheet" href="style.css" />
-  </head>
-
-  <body class="auth-page-login">
-    <div class="auth-box">
-      <div class="auth-card">
-        <h2>Welcome Back 👋</h2>
-
-        <input type="email" id="email" placeholder="Email" />
-        <input type="password" id="password" placeholder="Password" />
-
-        <button class="primary" onclick="login()">Login</button>
-
-        <p id="error" style="color: #e74a3b; margin-top: 10px"></p>
-
-        <p style="margin-top: 20px">
-          Don't have account?
-          <a href="register.html">Register</a>
-        </p>
-      </div>
+  <div class="auth-card">
+    <div class="logo" style="margin-bottom: 2rem;">
+      <div class="logo-icon lg">✦</div>
+      <span class="logo-text lg">Taskflow</span>
     </div>
-    <script src="js/login.js"></script>
-  </body>
+
+    <h1>Welcome back</h1>
+    <p class="subtitle">Sign in to continue to your workspace.</p>
+
+    <div class="field">
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="you@example.com" />
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="••••••••" />
+    </div>
+
+    <div id="error"></div>
+
+    <button class="primary" onclick="login()">Sign In</button>
+
+    <p class="footer-link">Don't have an account? <a href="register.html">Create one</a></p>
+  </div>
+
+  <script src="js/login.js"></script>
+</body>
 </html>
